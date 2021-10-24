@@ -19,6 +19,33 @@ calcReverse x acc = if (x == 0)
  then acc
  else calcReverse (div x 10) ((acc * 10) + (mod x 10))
 
+-- Задача 5
+maxRoot :: Int -> Int -> Int -> Double
+maxRoot a b c = 
+ let d = discriminant a b c;
+ in if (d == (0/0))
+  then 0/0
+  else max (calcResPolinom a b d) (calcResPolinom a b (-d))
 
- maxRoot :: Int -> Int -> Int -> Double 
- maxRoot a b c = (((b * b) - (4 * (a * c))) >= 0) && sqrt (fromDouble ((b * b) - (4 * (a * c))))
+calcResPolinom:: Int -> Int -> Double -> Double
+calcResPolinom a b d = (d - (fromIntegral b)) / ((fromIntegral a) * 2)
+
+discriminant :: Int -> Int -> Int -> Double
+discriminant a b c = if ((b * b) - (4 * (a * c)) >= 0) 
+ then sqrt (fromIntegral ((b * b) - (4 * (a * c))))
+ else 0/0
+
+
+funcTest :: Double -> Double
+funcTest x = (x * x) - 1
+
+ -- Задача 6
+root :: (Double->Double) -> Double -> Double -> Double -> Double
+root f a b eps = rootCalc (f) a b eps ((b + a) / 2) 
+
+rootCalc :: (Double->Double) -> Double -> Double -> Double -> Double -> Double
+rootCalc f a b eps c = if (abs (a - b)) < eps 
+ then c 
+ else if ((f a) * (f c)) < 0
+  then rootCalc f a c eps ((c + a) / 2)
+  else rootCalc f c b eps ((b + c) / 2)
